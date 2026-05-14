@@ -1,0 +1,40 @@
+//==========================
+// File: tb_my_regfile.v
+//==========================
+`timescale 1ns / 1ps
+
+module tb_my_regfile;
+
+reg clk, we;
+reg [1:0] addr;
+reg [3:0] data_in;
+wire [3:0] data_out;
+
+my_regfile uut (
+    .clk(clk),
+    .we(we),
+    .addr(addr),
+    .data_in(data_in),
+    .data_out(data_out)
+);
+
+always #5 clk = ~clk;
+
+initial begin
+    clk = 0;
+    we = 0;
+    addr = 0;
+    data_in = 0;
+
+    we = 1; addr = 2'b00; data_in = 4'b1010; #10;
+    we = 1; addr = 2'b01; data_in = 4'b1100; #10;
+    we = 1; addr = 2'b10; data_in = 4'b0111; #10;
+
+    we = 0; addr = 2'b00; #10;
+    addr = 2'b01; #10;
+    addr = 2'b10; #10;
+
+    $finish;
+end
+
+endmodule
